@@ -19,15 +19,14 @@ public class Menu {
         System.out.println("5. Filtrar por artista");
         System.out.println("6. Filtrar por género");
 
+        Playlist playlist = new Playlist();
+        MusicPlayer musicPlayer = new MusicPlayer();
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-
-        Playlist playlist = new Playlist();
 
         switch (input) {
             case "1" -> {
                 String songName = showFiles(getFiles());
-                MusicPlayer musicPlayer = new MusicPlayer();
                 musicPlayer.playMusic(songName);
             }
             case "2" -> addSong();
@@ -36,12 +35,14 @@ public class Menu {
             case "5" -> {
                 System.out.println("Nombre del artista:");
                 String artist = scanner.nextLine();
-                showFiles(getFiles("artist", artist));
+                String songName = showFiles(getFiles("artist", artist));
+                musicPlayer.playMusic(songName);
             }
             case "6" -> {
                 System.out.println("Nombre del género:");
                 String genre = scanner.nextLine();
-                showFiles(getFiles("genre", genre));
+                String songName = showFiles(getFiles("genre", genre));
+                musicPlayer.playMusic(songName);
             }
         }
 
