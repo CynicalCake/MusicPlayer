@@ -22,6 +22,7 @@ public class Menu {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
 
+        Playlist playlist = new Playlist();
 
         switch (input) {
             case "1":
@@ -33,10 +34,9 @@ public class Menu {
                 addSong();
                 break;
             case "3":
-                System.out.println("Placeholder Ver Playlists.");
+                playlist.showPlaylists();
                 break;
             case "4":
-                Playlist playlist = new Playlist();
                 playlist.createPlaylist();
                 break;
             case "5":
@@ -105,32 +105,6 @@ public class Menu {
                         files.put(n, set.getFileName().toString());
                         n++;
                     }
-                /*switch (filter) {
-                    case "artist":
-                        for (Path set : stream) {
-                            Map<String, String> song = getSongData(set.getFileName().toString());
-                            if (filterName.equals(song.get("artist"))) {
-                                files.put(n, set.getFileName().toString());
-                                n++;
-                            }
-                        }
-                        break;
-                    case "genre":
-                        for (Path set : stream) {
-                            Map<String, String> song = getSongData(set.getFileName().toString());
-                            if (filterName.equals(song.get("genre"))) {
-                                files.put(n, set.getFileName().toString());
-                                n++;
-                            }
-                        }
-                        break;
-                    default:
-                        for (Path set : stream) {
-                            files.put(n, set.getFileName().toString());
-                            n++;
-                        }
-                        break;
-                }*/
             } catch (IOException e) {
                 e.printStackTrace();
             }
