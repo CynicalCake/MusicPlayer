@@ -42,7 +42,7 @@ public class Playlist {
 
     public void showPlaylists() {
         String folderLocation = "playlists/";
-        HashMap<Integer, String> files = new HashMap<>();
+        HashMap<String, String> files = new HashMap<>();
 
         // Convierte la ruta ingresada a un objeto Path.
         Path folder = Paths.get(folderLocation);
@@ -50,7 +50,7 @@ public class Playlist {
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder)) {
             int n = 1;
             for (Path set : stream) {
-                files.put(n, set.getFileName().toString());
+                files.put(n + "", set.getFileName().toString());
                 n++;
             }
         } catch (IOException e) {
@@ -59,7 +59,7 @@ public class Playlist {
 
         System.out.println("Elija una playlist: ");
 
-        for (Map.Entry<Integer, String> set : files.entrySet()) {
+        for (Map.Entry<String, String> set : files.entrySet()) {
             String playlistName = set.getValue().substring(0, set.getValue().length() - 5);
             System.out.println(set.getKey() + ". " + playlistName);
         }
@@ -68,12 +68,7 @@ public class Playlist {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
 
-        // El input del usuario se convierte en Integer.
-        Integer option = Integer.parseInt(input);
-
-        // Se obtiene el nombre de la canción a través de la clave convertida a Integer previamente y la retorna.
-        System.out.println(files.get(option));
-        loadPlaylist(files.get(option));
+        loadPlaylist(files.get(input));
     }
 
     public void loadPlaylist(String jsonName) {
@@ -81,14 +76,18 @@ public class Playlist {
 
         JSONParser parser = new JSONParser();
 
-        try (FileReader archivo = new FileReader(filePath)) {
-            Object obj = parser.parse(archivo);
+        try (FileReader file = new FileReader(filePath)) {
+            Object obj = parser.parse(file);
             JSONObject jsonObject = (JSONObject) obj;
 
             // Convierte el JSONObject en un Map.
-            Map<Integer, String> datos = (Map<Integer, String>) jsonObject;
+            Map<String, String> playlist = (Map<String, String>) jsonObject;
 
-            // Ahora puedes trabajar con el Map que contiene los datos del JSON
+            Menu menu = new Menu();
+            MusicPlayer musicPlayer = new MusicPlayer();
+
+            String songName = menu.showFiles(playlist);
+            musicPlayer.playMusic(songName);
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }

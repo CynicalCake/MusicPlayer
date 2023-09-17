@@ -25,37 +25,31 @@ public class Menu {
         Playlist playlist = new Playlist();
 
         switch (input) {
-            case "1":
+            case "1" -> {
                 String songName = showFiles(getFiles());
                 MusicPlayer musicPlayer = new MusicPlayer();
                 musicPlayer.playMusic(songName);
-                break;
-            case "2":
-                addSong();
-                break;
-            case "3":
-                playlist.showPlaylists();
-                break;
-            case "4":
-                playlist.createPlaylist();
-                break;
-            case "5":
+            }
+            case "2" -> addSong();
+            case "3" -> playlist.showPlaylists();
+            case "4" -> playlist.createPlaylist();
+            case "5" -> {
                 System.out.println("Nombre del artista:");
                 String artist = scanner.nextLine();
                 showFiles(getFiles("artist", artist));
-                break;
-            case "6":
+            }
+            case "6" -> {
                 System.out.println("Nombre del género:");
                 String genre = scanner.nextLine();
                 showFiles(getFiles("genre", genre));
-                break;
+            }
         }
 
     }
 
-    public String showFiles(Map<Integer, String> hashMap) {
+    public String showFiles(Map<String, String> hashMap) {
         String fullSongName;
-        for(Map.Entry<Integer, String> set : hashMap.entrySet()) {
+        for(Map.Entry<String, String> set : hashMap.entrySet()) {
             // Convierte el nombre completo del archivo a un String más legible.
             fullSongName = getSongData(set.getValue()).get("artist") + " - " + getSongData(set.getValue()).get("name");
             // Muestra dicho String por consola.
@@ -70,20 +64,17 @@ public class Menu {
         if (input.equals("0"))
             return input;
 
-        // El input del usuario se convierte en Integer.
-        Integer option = Integer.parseInt(input);
-
-        // Se obtiene el nombre de la canción a través de la clave convertida a Integer previamente y la retorna.
-        return hashMap.get(option);
+        // Se obtiene el nombre de la canción a través de la clave la retorna.
+        return hashMap.get(input);
     }
 
-    public Map<Integer, String> getFiles() {
+    public Map<String, String> getFiles() {
         return getFiles("none", "none");
     }
 
-    public Map<Integer, String> getFiles(String filter, String filterName) {
+    public Map<String, String> getFiles(String filter, String filterName) {
         String folderLocation = "songs/";
-        HashMap<Integer, String> files = new HashMap<>();
+        HashMap<String, String> files = new HashMap<>();
 
         // Convierte la ruta ingresada a un objeto Path.
         Path folder = Paths.get(folderLocation);
@@ -96,13 +87,13 @@ public class Menu {
                     for (Path set : stream) {
                         Map<String, String> song = getSongData(set.getFileName().toString());
                         if (filterName.equals(song.get(filter))) {
-                            files.put(n, set.getFileName().toString());
+                            files.put(n + "", set.getFileName().toString());
                             n++;
                         }
                     }
                 else
                     for (Path set : stream) {
-                        files.put(n, set.getFileName().toString());
+                        files.put(n + "", set.getFileName().toString());
                         n++;
                     }
             } catch (IOException e) {
