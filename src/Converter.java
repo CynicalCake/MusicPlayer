@@ -8,7 +8,7 @@ import java.io.File;
 public class Converter {
 
     public void addSong(String inputFilePath, String artistName, String songName, String genre) {
-        String outputFilePath = "songs/" + artistName + ">" + songName + ">" + genre + ".wav";
+        String outputFilePath = "songs/" + artistName + ";" + songName + ";" + genre + ".wav";
         convert(inputFilePath, outputFilePath);
     }
 

@@ -27,7 +27,7 @@ public class Menu {
                 showFiles(files);
                 break;
             case "2":
-                System.out.println("Placeholder Agregar Canciones.");
+                addSong();
                 break;
             case "3":
                 System.out.println("Placeholder Ver Playlists.");
@@ -107,5 +107,27 @@ public class Menu {
         songData.put("genre", genre);
 
         return songData;
+    }
+
+    public void addSong() {
+        System.out.println("Ingrese el directorio de la canción: \n");
+
+        Scanner scanner = new Scanner(System.in);
+        String inputFilePath = scanner.nextLine();
+
+        System.out.println("Nombre del artista:");
+        String artist = scanner.nextLine();
+
+        System.out.println("Nombre de la canción:");
+        String name = scanner.nextLine();
+
+        System.out.println("Género de la canción:");
+        String genre = scanner.nextLine();
+
+        Converter converter = new Converter();
+        converter.addSong(inputFilePath, artist, name, genre);
+
+        System.out.println("Canción añadida.");
+        ShowMenu();
     }
 }
