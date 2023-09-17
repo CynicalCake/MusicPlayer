@@ -6,9 +6,9 @@ import javax.sound.sampled.Clip;
 import java.util.Scanner;
 
 public class MusicPlayer {
-    public void playMusic(String location, String songName){
+    public void playMusic(String songName){
         try {
-            File songPath = new File(location);
+            File songPath = new File("songs/" + songName);
 
             if (songPath.exists()){
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(songPath);

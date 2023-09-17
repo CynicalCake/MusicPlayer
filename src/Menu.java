@@ -25,7 +25,9 @@ public class Menu {
 
         switch (input) {
             case "1":
-                showFiles(getFiles());
+                String songName = showFiles(getFiles());
+                MusicPlayer musicPlayer = new MusicPlayer();
+                musicPlayer.playMusic(songName);
                 break;
             case "2":
                 addSong();
@@ -34,7 +36,8 @@ public class Menu {
                 System.out.println("Placeholder Ver Playlists.");
                 break;
             case "4":
-                System.out.println("Placeholder Crear Playlist.");
+                Playlist playlist = new Playlist();
+                playlist.createPlaylist();
                 break;
             case "5":
                 System.out.println("Nombre del artista:");
@@ -50,7 +53,7 @@ public class Menu {
 
     }
 
-    public void showFiles(Map<Integer, String> hashMap) {
+    public String showFiles(Map<Integer, String> hashMap) {
         String fullSongName;
         for(Map.Entry<Integer, String> set : hashMap.entrySet()) {
             // Convierte el nombre completo del archivo a un String más legible.
@@ -64,18 +67,14 @@ public class Menu {
         // Nuevo input.
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
+        if (input.equals("0"))
+            return input;
 
         // El input del usuario se convierte en Integer.
         Integer option = Integer.parseInt(input);
-        // Se obtiene el nombre de la canción a través de la clave convertida a Integer previamente.
-        String fileName = hashMap.get(option);
 
-        // Se establece como directorio del archivo el directorio de canciones + el nombre de la canción.
-        String filePath = "songs/" + fileName;
-
-        MusicPlayer musicPlayer = new MusicPlayer();
-
-        musicPlayer.playMusic(filePath, fileName);
+        // Se obtiene el nombre de la canción a través de la clave convertida a Integer previamente y la retorna.
+        return hashMap.get(option);
     }
 
     public Map<Integer, String> getFiles() {
