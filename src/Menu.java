@@ -16,15 +16,16 @@ public class Menu {
         System.out.println("2. Agregar canciones");
         System.out.println("3. Ver playlists");
         System.out.println("4. Crear playlist");
+        System.out.println("5. Filtrar por artista");
+        System.out.println("6. Filtrar por género");
 
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
 
-        Map<Integer, String> files = getFiles();
 
         switch (input) {
             case "1":
-                showFiles(files);
+                showFiles(getFiles());
                 break;
             case "2":
                 addSong();
@@ -34,6 +35,16 @@ public class Menu {
                 break;
             case "4":
                 System.out.println("Placeholder Crear Playlist.");
+                break;
+            case "5":
+                System.out.println("Nombre del artista:");
+                String artist = scanner.nextLine();
+                showFiles(getFiles("artist", artist));
+                break;
+            case "6":
+                System.out.println("Nombre del género:");
+                String genre = scanner.nextLine();
+                showFiles(getFiles("genre", genre));
                 break;
         }
 
@@ -68,6 +79,10 @@ public class Menu {
     }
 
     public Map<Integer, String> getFiles() {
+        return getFiles("none", "none");
+    }
+
+    public Map<Integer, String> getFiles(String filter, String filterName) {
         String folderLocation = "songs/";
         HashMap<Integer, String> files = new HashMap<>();
 
@@ -78,10 +93,45 @@ public class Menu {
         if (Files.isDirectory(folder)) {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder)) {
                 int n = 1;
-                for (Path set : stream) {
-                    files.put(n, set.getFileName().toString());
-                    n++;
-                }
+                if (!filter.equals("none"))
+                    for (Path set : stream) {
+                        Map<String, String> song = getSongData(set.getFileName().toString());
+                        if (filterName.equals(song.get(filter))) {
+                            files.put(n, set.getFileName().toString());
+                            n++;
+                        }
+                    }
+                else
+                    for (Path set : stream) {
+                        files.put(n, set.getFileName().toString());
+                        n++;
+                    }
+                /*switch (filter) {
+                    case "artist":
+                        for (Path set : stream) {
+                            Map<String, String> song = getSongData(set.getFileName().toString());
+                            if (filterName.equals(song.get("artist"))) {
+                                files.put(n, set.getFileName().toString());
+                                n++;
+                            }
+                        }
+                        break;
+                    case "genre":
+                        for (Path set : stream) {
+                            Map<String, String> song = getSongData(set.getFileName().toString());
+                            if (filterName.equals(song.get("genre"))) {
+                                files.put(n, set.getFileName().toString());
+                                n++;
+                            }
+                        }
+                        break;
+                    default:
+                        for (Path set : stream) {
+                            files.put(n, set.getFileName().toString());
+                            n++;
+                        }
+                        break;
+                }*/
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -110,9 +160,9 @@ public class Menu {
     }
 
     public void addSong() {
-        System.out.println("Ingrese el directorio de la canción: \n");
-
         Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Ingrese el directorio de la canción:");
         String inputFilePath = scanner.nextLine();
 
         System.out.println("Nombre del artista:");
